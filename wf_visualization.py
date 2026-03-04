@@ -65,6 +65,42 @@ def computing_correlations():
         f.write(correlations.to_string()) 
         f.write("\n")
         
-if __name__ == "__main__":
-    computing_summary_stats()
-    computing_correlations()
+# if __name__ == "__main__":
+#     computing_summary_stats()
+#     computing_correlations()
+
+
+def generating_plots():
+    df = pd.read_csv(PROCESSED_DATA)
+    os.makedirs(DIR_OF_VISUALS, exist_ok=True)
+    
+    quantitative_features = [
+        "Age",
+        "Purchase Amount (USD)",
+        "Review Rating",
+        "Previous Purchases",
+    ]
+
+    qualitative_features = ["Category"]
+    
+    for x_col, y_col in itertools.combinations(quantitative_features, 2):
+        plt.figure(figsize=(6,4)) 
+        sns.scatterplot(data=df, x=x_col, y=y_col, alpha=0.6)
+        plt.title(f"Scatter Plot: {x_col} vs {y_col}")
+        plt.xlabel(x_col)
+        plt.ylabel(y_col)
+        plt.tight_layout()
+        filename = f"scatter_{x_col.replace(' ', '_')}_vs_{y_col.replace(' ', '_')}.png"
+        plt.savefig(os.path.join(DIR_OF_VISUALS, filename))
+        plt.close()
+        
+    for col in qualitative_features:
+        plt.figure(figsize=(6,4))
+        df[col].value_counts().plot(kind="bar")
+        plt.title(f"Distribution of {col}")
+        plt.xlabel(col)
+        plt.ylabel("Count")
+        plt.tight_layout()
+        filename = f"hist_{col.replace(' ', '_')}.png"
+        plt.savefig(os.path.join(DIR_OF_VISUALS, filename))
+        plt.close()
