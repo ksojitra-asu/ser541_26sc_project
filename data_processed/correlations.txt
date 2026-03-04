@@ -1,0 +1,6 @@
+Correlation Matrix
+                            Age  Purchase Amount (USD)  Review Rating  Previous Purchases
+Age                    1.000000              -0.010353      -0.021949            0.040445
+Purchase Amount (USD) -0.010353               1.000000       0.030829            0.008052
+Review Rating         -0.021949               0.030829       1.000000            0.004229
+Previous Purchases     0.040445               0.008052       0.004229            1.000000

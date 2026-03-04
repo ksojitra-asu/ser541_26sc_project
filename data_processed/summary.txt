@@ -1,0 +1,10 @@
+Summary Statistics - Quantitative Features
+Feature	Min	Max	Median
+Age	18.000	70.000	44.000
+Purchase Amount (USD)	20.000	99.000	60.000
+Review Rating	2.500	5.000	3.700
+Previous Purchases	1.000	50.000	25.000
+
+Summary Statistics - Qualitative Features
+Features	Num Categories	Most Frequent	Least Frequent
+Category	4	Clothing	Outerwear
