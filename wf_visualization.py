@@ -73,34 +73,73 @@ def computing_correlations():
 def generating_plots():
     df = pd.read_csv(PROCESSED_DATA)
     os.makedirs(DIR_OF_VISUALS, exist_ok=True)
-    
+
+    # Shared settings: style and palette for all plots
+    sns.set_theme(style="whitegrid", font_scale=1.1)
+    PALETTE_SCATTER = "husl"  
+
     quantitative_features = [
         "Age",
         "Purchase Amount (USD)",
         "Review Rating",
         "Previous Purchases",
     ]
-
     qualitative_features = ["Category"]
-    
+
     for x_col, y_col in itertools.combinations(quantitative_features, 2):
-        plt.figure(figsize=(6,4)) 
-        sns.scatterplot(data=df, x=x_col, y=y_col, alpha=0.6)
-        plt.title(f"Scatter Plot: {x_col} vs {y_col}")
-        plt.xlabel(x_col)
-        plt.ylabel(y_col)
+        fig, ax = plt.subplots(figsize=(8, 5))
+        sns.scatterplot(
+            data=df,
+            x=x_col,
+            y=y_col,
+            hue="Category",
+            palette=PALETTE_SCATTER,
+            alpha=0.7,
+            s=40,
+            edgecolor="white",
+            linewidth=0.3,
+            ax=ax,
+        )
+        
+        sns.regplot(
+            data=df,
+            x=x_col,
+            y=y_col,
+            scatter=False,
+            color="black",
+            line_kws={"linestyle": "--", "linewidth": 2},
+            ax=ax,
+        )
+        corr = df[x_col].corr(df[y_col])
+        ax.set_title(f"{x_col} vs {y_col} (r = {corr:.3f})")
+        ax.set_xlabel(x_col)
+        ax.set_ylabel(y_col)
+        ax.legend(title="Category", bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=8)
         plt.tight_layout()
         filename = f"scatter_{x_col.replace(' ', '_')}_vs_{y_col.replace(' ', '_')}.png"
-        plt.savefig(os.path.join(DIR_OF_VISUALS, filename))
+        plt.savefig(os.path.join(DIR_OF_VISUALS, filename), dpi=FIG_DPI, bbox_inches="tight")
         plt.close()
-        
+
+    
     for col in qualitative_features:
-        plt.figure(figsize=(6,4))
-        df[col].value_counts().plot(kind="bar")
-        plt.title(f"Distribution of {col}")
-        plt.xlabel(col)
-        plt.ylabel("Count")
+        value_counts = df[col].value_counts()
+        value_counts = value_counts.sort_values(ascending=True)  
+        n_cats = len(value_counts)
+        colors = sns.color_palette(PALETTE_SCATTER, n_colors=n_cats)
+        fig, ax = plt.subplots(figsize=(8, 5))
+        bars = ax.barh(value_counts.index, value_counts.values, color=colors, edgecolor="white", linewidth=0.5)
+        ax.set_xlabel("Count")
+        ax.set_ylabel(col)
+        ax.set_title(f"Distribution of {col} (n = {len(df):,})")
+        for bar, val in zip(bars, value_counts.values):
+            ax.text(val + 20, bar.get_y() + bar.get_height() / 2, f"{val:,}", va="center", fontsize=9)
         plt.tight_layout()
         filename = f"hist_{col.replace(' ', '_')}.png"
-        plt.savefig(os.path.join(DIR_OF_VISUALS, filename))
+        plt.savefig(os.path.join(DIR_OF_VISUALS, filename), dpi=FIG_DPI, bbox_inches="tight")
         plt.close()
+
+
+if __name__ == "__main__":
+    computing_summary_stats()
+    computing_correlations()
+    generating_plots()
