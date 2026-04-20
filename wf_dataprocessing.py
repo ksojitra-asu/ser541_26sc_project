@@ -29,9 +29,45 @@ def processing_data():
 
     df["Purchase Amount (USD)"] = purchase.clip(lower, upper)
     
+    # Feature Engineering & Preprocessing
+    
+    # 1. Drop unnecessary Customer ID
+    if "Customer ID" in df.columns:
+        df = df.drop(columns=["Customer ID"])
+        
+    # 2. Feature Creation
+    df["Is_High_Spender"] = (df["Purchase Amount (USD)"] > 75).astype(int)
+    
+    bins = [0, 25, 50, 150] # <25: Young, 25-50: Adult, >50: Senior
+    labels = ["Young", "Adult", "Senior"]
+    df["Age_Group"] = pd.cut(df["Age"], bins=bins, labels=labels, right=False)
+    
+    # 3. Encoding Categorical Data
+    # Binary Yes/No Columns mapped to 1/0
+    binary_cols = ["Subscription Status", "Discount Applied", "Promo Code Used"]
+    for col in binary_cols:
+        if col in df.columns:
+            df[col] = df[col].map({"Yes": 1, "No": 0})
+            
+    # One-Hot Encoding for remaining nominal categories
+    categorical_cols = df.select_dtypes(include=["object", "category"]).columns.tolist()
+    # Adding string conversions as a failsafe before dummying
+    for col in categorical_cols:
+        df[col] = df[col].astype(str)
+        
+    df = pd.get_dummies(df, columns=categorical_cols, drop_first=False, dtype=int)
+    
+    # 4. Feature Scaling (Standardization)
+    from sklearn.preprocessing import StandardScaler
+    scaler = StandardScaler()
+    
+    # We only scale the continuous features (not the encoded ones)
+    scale_cols = ["Age", "Purchase Amount (USD)", "Review Rating", "Previous Purchases"]
+    df[scale_cols] = scaler.fit_transform(df[scale_cols])
+    
     # saving processed data in data processed folder 
-    os.makedirs("data_processed", exist_ok = True)
-    df.to_csv(PROCESSED_DATA, index = False)
+    os.makedirs("data_processed", exist_ok=True)
+    df.to_csv(PROCESSED_DATA, index=False)
     
 if __name__ == "__main__":
     processing_data()
