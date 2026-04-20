@@ -8,6 +8,7 @@ PROCESSED_DATA = os.path.join("data_processed", "processed_shopping_trends.csv")
 PATH_OF_SUMMARY = os.path.join("data_processed", "summary.txt")
 PATH_OF_CORR = os.path.join("data_processed", "correlations.txt")
 DIR_OF_VISUALS = "visuals"
+FIG_DPI = 300
 
 def computing_summary_stats():
     df = pd.read_csv(PROCESSED_DATA)
