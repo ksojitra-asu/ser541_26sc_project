@@ -4,7 +4,7 @@
 Recognizing Differences in Purchase Behavior among E-Commerce Demographics
 
 ### 2. Author
-Anonymous
+Karnika Sojitra
 
 ### 3. Date
 04/20/2026

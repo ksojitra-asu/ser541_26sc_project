@@ -1,6 +1,6 @@
 **SER594: Exploratory Data Munging and Visualization**
 
-**Title:** Shopping Trends Analysis based on Customer Demographics and Purchase Behavior
+**Title:** Recognizing Differences in Purchase Behavior among E-Commerce Demographics
 
 **Author:** Anonymous
 
@@ -120,8 +120,8 @@ Rows where all four of the numeric columns (Age, Purchase Amount (USD), Review R
 3. Outlier handling for Purchase Amount (USD)
 Extreme values in Purchase Amount (USD) were capped using the 1st and 99th percentiles: values below the 1st percentile were set to the 1st percentile, and values above the 99th percentile were set to the 99th percentile. No new outliers are introduced; existing extremes are only bounded.
 
-4. Unchanged fields
-All other columns (e.g., Customer ID, Gender, Item Purchased, Category, etc.) were left unchanged. No labels or categories were altered, so the semantics of the data are preserved.
+4. Feature Engineering & Scaling (Added for Machine Learning Pipeline)
+To accurately prepare the dataset for algorithmic ingestion, `Customer ID` was strictly dropped to eliminate non-predictive algorithmic noise. We cleanly mapped exact binary labels (e.g., `Subscription Status`, `Discount Applied`) natively to `1` and `0`. Crucially, all remaining categorical/text fields (`Gender`, `Category`, `Season`, etc.) underwent One-Hot Encoding (`get_dummies`) to dynamically construct isolated binary input vectors for Scikit-Learn compatibility. Finally, we deployed a `StandardScaler` across the core continuous variables (`Age`, `Purchase Amount`, `Review Rating`, and `Previous Purchases`) to clamp extreme numeric weight variations strictly into identical standard mathematical bounds.
 
 **Visualizations:**
 
