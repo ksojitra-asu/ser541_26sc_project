@@ -11,7 +11,7 @@ def predict_single_input():
     actual_model = joblib.load(model_path)
     
     # 2. Extract an isolated input
-    X_test_path = os.path.join(MODELS_DIR, "X_test.csv")
+    X_test_path = os.path.join(BASE_DIR, "data_processed", "X_test.csv")
     X_test = pd.read_csv(X_test_path)
     
     # Extract the very first row to simulate a fresh incoming user request
