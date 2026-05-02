@@ -8,6 +8,7 @@ import joblib
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROCESSED_DATA = os.path.join(BASE_DIR, "data_processed", "processed_shopping_trends.csv")
 MODELS_DIR = os.path.join(BASE_DIR, "models")
+DATA_PROCESSED_DIR = os.path.join(BASE_DIR, "data_processed")
 
 def training_models():
     # 1. Data Loading
@@ -43,10 +44,11 @@ def training_models():
     joblib.dump(baseline_model, os.path.join(MODELS_DIR, "baseline_model.pkl"))
     joblib.dump(actual_model, os.path.join(MODELS_DIR, "actual_model.pkl"))
     
-    # Exporting test sets ensures our future evaluation scripts test against 
-    # the exact same hold-out data.
-    X_test.to_csv(os.path.join(MODELS_DIR, "X_test.csv"), index=False)
-    y_test.to_csv(os.path.join(MODELS_DIR, "y_test.csv"), index=False)
+    # Exporting test sets to data_processed/ ensures our future evaluation scripts
+    # test against the exact same hold-out data.
+    os.makedirs(DATA_PROCESSED_DIR, exist_ok=True)
+    X_test.to_csv(os.path.join(DATA_PROCESSED_DIR, "X_test.csv"), index=False)
+    y_test.to_csv(os.path.join(DATA_PROCESSED_DIR, "y_test.csv"), index=False)
     
     print("Baseline (Logistic) and Actual (Random Forest) classification models saved securely to /models.")
 

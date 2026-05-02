@@ -13,8 +13,8 @@ SUMMARY_FILE = os.path.join(EVAL_DIR, "summary.txt")
 
 def evaluate_models():
     # 1. Loading purely testing vault
-    X_test = pd.read_csv(os.path.join(MODELS_DIR, "X_test.csv"))
-    y_test = pd.read_csv(os.path.join(MODELS_DIR, "y_test.csv")).values.ravel()
+    X_test = pd.read_csv(os.path.join(BASE_DIR, "data_processed", "X_test.csv"))
+    y_test = pd.read_csv(os.path.join(BASE_DIR, "data_processed", "y_test.csv")).values.ravel()
     
     out_lines = []
     out_lines.append("--- ML Evaluation Matrix: Subscription Status ---\n")
