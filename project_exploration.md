@@ -2,7 +2,7 @@
 
 **Title:** Recognizing Differences in Purchase Behavior among E-Commerce Demographics
 
-**Author:** Anonymous
+**Author:** Karnika Sojitra
 
 **Date:** 03/04/2026
 

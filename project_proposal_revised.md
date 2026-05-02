@@ -1,6 +1,6 @@
 #### SER541: Project Proposal
 #### Title: Recognizing Differences in Purchase Behavior among E-Commerce Demographics
-#### Anonymous
+#### Karnika Sojitra
 #### Date: 03/23/2026
 
 **Keywords:**
